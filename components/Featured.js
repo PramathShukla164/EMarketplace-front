@@ -19,7 +19,7 @@ const Desc = styled.p`
 
 const ColumnsWrapper = styled.div`
     display:grid;
-    grid-template-columns: .9fr 1.1fr;
+    grid-template-columns: 1.1fr 0.9fr;
     gap: 40px;
     img{
         max-width: 100%;    
@@ -36,16 +36,16 @@ const ButtonsWrapper = styled.div`
     margin-top: 25px;
 `;
 
-export default function Featured(){
+export default function Featured({product}){
     return(
         <Bg>
             <Center>
                 <ColumnsWrapper>
                     <column>
                         <div>
-                            <Title>Pro anywhere</Title>
+                            <Title>{product.title}</Title>
                             <Desc>
-                                Lorem ipsum dolar sit amet,
+                                {product.description}
                             </Desc>
                             <ButtonsWrapper>
                                 <Button outline white>Read more</Button>
