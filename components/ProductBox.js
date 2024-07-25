@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Button from "./Button";
+import CartIcon from "./icons/CartIcon";
 
 const ProductWrapper = styled.div`
 
@@ -27,16 +28,32 @@ const Title = styled.h2`
     margin: 0;
 `;
 
+const ProductInfoBox = styled.div`
+    margin-top: 10px;
+`;
+
+const PriceRow = styled.div`
+    display: flex;
+`;
+
+
 export default function ProductBox({_id,title,description,price,images}){
     return(
         <ProductWrapper>
             <WhiteBox>
                 <div>
-                <img src={images[0]} alt="" />
+                    <img src={images[0]} alt="" />
                 </div>           
-        </WhiteBox>
-        <Title>{title}</Title> 
-        <Button primary>Add to cart</Button> 
+            </WhiteBox>
+        <ProductInfoBox>
+            <Title>{title}</Title> 
+            <PriceRow>
+                <div>
+                ${price}
+                </div>
+                <Button primary><CartIcon/></Button> 
+            </PriceRow>
+        </ProductInfoBox>
         </ProductWrapper>
         
     );
