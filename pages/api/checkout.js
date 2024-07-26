@@ -1,5 +1,7 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
+import { Order } from "@/models/Order";
+const stripe = require('stripe')('sk_test_...');
 
 export default async function handler(req,res) {
     if (req.method !== 'POST'){
@@ -31,6 +33,9 @@ export default async function handler(req,res) {
             });
         }       
     }
-    res.json({line_items});
+    
+    const orderDoc = await Order.create({
+        line_items,name,email,city,postalCode,streetAddress,country,paid:false,
+    });
 }
 
