@@ -7,6 +7,7 @@ import { CartContext } from "@/components/CartContext";
 import axios from "axios";
 import { useState } from "react";
 import Table from "@/components/Table";
+import Input from "@/components/Input";
 //import { Product } from "@/models/Product";
 
 const ColumnsWrapper = styled.div`
@@ -47,9 +48,20 @@ const QuantityLabel = styled.span`
     padding: 0 3px;
 `;
 
+const CityHolder = styled.div`
+    display: flex;
+    gap: 5px;
+`;
+
 export default function CartPage(){
     const {cartProducts, addProduct, removeProduct} = useContext(CartContext);
     const [products, setProducts] = useState([]);
+    const [name,setName] = useState('');
+    const [email,setEmail] = useState('');
+    const [city,setCity] = useState('');
+    const [postalCode,setPostalCode] = useState('');
+    const [streetAddress,setStreetAddress] = useState('');
+    const [country,setCountry] = useState('');
     useEffect(() => {
         if (cartProducts.length > 0){
             axios.post('/api/cart', {ids:cartProducts}).then(
@@ -58,6 +70,9 @@ export default function CartPage(){
                 }
             )
         }
+        else{
+            setProducts([]);
+        }
     }, [cartProducts])
 
     function moreOfThisProduct(id){
@@ -65,6 +80,11 @@ export default function CartPage(){
     }
     function lessofThisProduct(id){
         removeProduct(id);
+    }
+    let total = 0;
+    for (const productId of cartProducts){
+        const price = products.find(p => p._id === productId)?.price || 0;
+        total += price;
     }
     return (
         <>
@@ -105,7 +125,12 @@ export default function CartPage(){
                                                     ${cartProducts.filter(id => id === product._id).length * product.price}
                                                 </td>
                                             </tr>
-                                        ))}                  
+                                        ))}
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>${total}</td>
+                                        </tr>                 
                                 </tbody>
                             </Table>
                         )}
@@ -113,9 +138,18 @@ export default function CartPage(){
                         {!!cartProducts?.length && (
                             <Box>
                             <h2>Order information</h2>
-                            <input type="text" placeholder="Address"/>
-                            <input type="text" placeholder="Address 2"/>
-                            <Button black block>Continue to payment</Button>
+                            <form method="post" action="/api/checkout">
+                                <Input type="text" placeholder="Name" value={name} name="name" onChange={ev => setName(ev.target.value)}/>
+                                <Input type="text" placeholder="Email" value={email} name="email" onChange={ev => setEmail(ev.target.value)}/>
+                                <Input type="text" placeholder="Street Address" value={streetAddress} name="streetAddress" onChange={ev => setStreetAddress(ev.target.value)}/>
+                                <CityHolder>
+                                    <Input type="text" placeholder="City" value={city} name="city" onChange={ev => setCity(ev.target.value)}/>
+                                    <Input type="text" placeholder="Postal code" value={postalCode} name="postalCode" onChange={ev => setPostalCode(ev.target.value)}/>
+                                </CityHolder>
+                                <Input type="text" placeholder="Country" value={country} name="country" onChange={ev => setCountry(ev.target.value)}/>
+                                <input type="hidden" name="products" value={cartProducts.join('.')} />
+                                <Button black block type="submit">Continue to payment</Button>
+                            </form>
                         </Box>
                         )}
                 </ColumnsWrapper>
