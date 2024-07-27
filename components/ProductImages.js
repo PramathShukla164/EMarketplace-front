@@ -5,7 +5,7 @@ const Image = styled.img`
     max-width: 100%;
     max-height: 100%;
 `;
-const BigImage = styled.div`
+const BigImage = styled.img`
     max-width: 100%;
     max-height: 200px;
 `;
@@ -36,12 +36,12 @@ export default function ProductImages({images}){
     return (
         <>
             <BigImageWrapper>
-                <BigImage scr={activeImage} />
+                <BigImage src={activeImage} />
             </BigImageWrapper>
             <ImageButtons>
                 {images.map(image => (
                     <ImageButton 
-                    key={image}
+                        key={image}
                         active={image===activeImage} 
                         onClick={() => setActiveImage(image)}> 
                         <Image src={image} alt=""/>
