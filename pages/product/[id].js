@@ -5,10 +5,13 @@ import { Product } from "@/models/Product";
 import Title from "@/components/Title";
 import WhiteBox from "@/components/WhiteBox";
 import styled from "styled-components";
+import ProductImages from "@/components/ProductImages";
 
 const ColWrapper = styled.div`
     display: grid;
     grid-template-columns: .8fr 1.2fr;
+    gap: 40px;
+    margin-top: 40px;
 `;
 
 export default function ProductPage({product}){
@@ -18,7 +21,7 @@ export default function ProductPage({product}){
             <Center>
                 <ColWrapper>
                     <WhiteBox>
-                        image
+                        <ProductImages images={product.images} />
                     </WhiteBox>
                     <div>
                         <Title>{product.title}</Title>
